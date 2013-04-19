@@ -20,7 +20,7 @@ namespace Keboola.StorageApiTest
     [TestFixture]
     public class StorageApiClientTest
     {
-        static string token = "023c92ba0638852e91a45f6b6e8a56fa"; //ADD YOUR TEST TOKEN HERE!!!
+        static string token = ""; //ADD YOUR TEST TOKEN HERE!!!
         static string testTableName = "SomeTable";
         static string testBucketId = "sys.c-TestingBucket";
         static string testBucketName = "TestingBucket";
