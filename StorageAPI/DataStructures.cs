@@ -18,7 +18,39 @@ namespace Keboola.StorageAPI.DataStructures
         "lastImportDate": "2012-07-13 10:00:42"
      */
 
+    public class CrmQueryTable
+    {
+        [CsvColumn(Name="load")]
+        public string LoadType;
+        [CsvColumn(Name = "query")]
+        public string Query;    
+    
+    }
 
+    [DataContract]
+    public class ImportConfiguration
+    {
+        [DataMember(Name="load")]
+        [CsvColumn(Name = "load")]
+        public string LoadType;
+
+        [DataMember(Name = "query_type")]
+        [CsvColumn(Name = "query_type")]
+        public string QueryType;
+
+        [DataMember(Name = "is_history")]
+        [CsvColumn(Name = "is_history")]
+        public bool IsHistory;
+
+        [DataMember(Name = "query")]
+        [CsvColumn(Name = "query")]
+        public string Query;
+
+        [DataMember(Name = "active")]
+        [CsvColumn(Name = "active")]
+        public bool Active;
+            
+    }
 
 
     public interface IDataRow

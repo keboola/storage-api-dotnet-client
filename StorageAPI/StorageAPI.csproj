@@ -119,6 +119,10 @@
       <Project>{2ba74eef-1a7f-4b47-a4f8-3703e1585d36}</Project>
       <Name>LogHelper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MSCrm\MSCrm.csproj">
+      <Project>{4a361157-95f8-4f3d-9af6-ba3b18432a87}</Project>
+      <Name>MSCrm</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -14,12 +14,29 @@ using NLog.Targets;
 namespace Keboola.LogHelper
 {
 
-    public class CommonUtils
+    public static class CommonUtils
     {
 
         static string IsDevelModeString = "isDevel";
-        static string ApplicationName = "storage-api-dotnet-client";
-        static string ApplicationNameKey = "Application-Name";
+        static string ApplicationName = "MSCRM-Extractor";
+
+        /// <summary>
+        /// Converts a dictionary into string readable format
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dic"></param>
+        /// <param name="format"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static string ToFormattedString<TKey, TValue>(this IDictionary<TKey, TValue> dic, string format, string separator)
+        {
+            return String.Join(
+                !String.IsNullOrEmpty(separator) ? separator : " ",
+                dic.Select(p => String.Format(
+                    !String.IsNullOrEmpty(format) ? format : "{0}='{1}'",
+                    p.Key, p.Value)));
+        }
 
         /// <summary>
         /// Converts date into into local time zone date string in format yyyy-MM-dd HH:mm:sszzz
@@ -53,18 +70,11 @@ namespace Keboola.LogHelper
         /// </summary>
         /// <returns></returns>
         public static string GetApplicationName()
-        {
-            var appSettings = System.Configuration.ConfigurationManager.AppSettings;
-            string appname = ApplicationName;
-            
-            if(appSettings.AllKeys.Contains(ApplicationNameKey))
-                appname = appSettings[ApplicationNameKey];
-
-
+        { 
             if(IsDevel())
-                return appname + "-devel";
-
-            return appname;
+                return ApplicationName + "-devel";
+            
+            return ApplicationName;
         }
     
     }
@@ -99,6 +109,7 @@ namespace Keboola.LogHelper
             var result = new Dictionary<string,object>();
             result.Add("Count", list.Count.ToString());
             int idx = 1;
+            List<object> tmpList = new List<object>();
        
             foreach(var item in list)
             {
@@ -106,14 +117,15 @@ namespace Keboola.LogHelper
                 {"Component", item.Component},
                 {"Method",item.Method},
                 {"Message", item.Message}
-                };             
-
-                result.Add(priority, errorItem);
+                };
+                tmpList.Add(errorItem);
+                
                 idx++;            
             }
-
+            result.Add(priority, tmpList);
             return result;        
         }
+
 
         public Dictionary<string,object> GenerateOutput()
         {

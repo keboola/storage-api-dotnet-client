@@ -22,7 +22,7 @@ namespace Keboola.StorageAPI
            
             _client = new HttpClient();
             _client.BaseAddress = new Uri(serverAddress);
-           
+            _client.Timeout = TimeSpan.FromMinutes(30);
             SetHeaders(headers);
         
         }
@@ -37,7 +37,7 @@ namespace Keboola.StorageAPI
 
         public void AddFileFormData(string name, FileInfo file)
         {
-            FileStream fstream = File.OpenRead(file.FullName);
+            FileStream fstream = File.OpenRead(file.FullName); 
             //StreamReader reader = new StreamReader(file.FullName);    
             //_formDataContent = new MultipartFormDataContent(); - the file is added after AddStringFormData is called where this formdata is inicialized
             logger.Trace("Adding file stream " + file.Name + " to HTTP body request");
@@ -45,9 +45,11 @@ namespace Keboola.StorageAPI
         
         }
 
-        public void AddStringFormData(Dictionary<string,string> data)
+        public void AddStringFormData(Dictionary<string,string> data, bool showLog = true)
         {
-            logger.Trace("Adding values to HTTP body request:" + data.ToString());
+            if(showLog)
+                logger.Trace("Adding values to HTTP body request:" + data.ToFormattedString(null,null));
+
             _formDataContent = new MultipartFormDataContent();
             foreach (var pair in data)
                 _formDataContent.Add(new StringContent(pair.Value, Encoding.UTF8), pair.Key);    
@@ -75,12 +77,18 @@ namespace Keboola.StorageAPI
                 string taskType = "Failed while waiting for the HTTP response.";
                 if (isEnsure)
                     taskType = "Failed while ensuring that the HTTP response was successful(Status Code in range 200-299).";
-                var exception = ae.Flatten();
-                string mymessage = "This mostly happens due to some error during export to SAPI. Quick fix: drop the appropiate table(if exists) that is being exported into out stage or check its events.";
-                throw new Exception(mymessage + taskType + "[AggregateException]:" + exception.Message, exception);
-                //
-                //logger.Exception("Failed handling request task[AggregateException]:" + exception.InnerException
-                //    + exception.StackTrace);
+
+                //var exception = ae.Flatten();
+                //string mymessage = "This mostly happens due to some error during export to SAPI. Quick fix: drop the appropiate table(if exists) that is being exported into out stage or check its events.";
+                var strexceptions = new StringBuilder();
+                int ctr = 1;
+                foreach(var ex in ae.Flatten().InnerExceptions)
+                {
+                    strexceptions.AppendLine(ctr.ToString() + ". " + ex.Message);
+                    ctr++;
+
+                    }
+                throw new Exception(taskType + "[AggregateException]:" + strexceptions.ToString(), ae);              
             }
             catch(Exception ee)
             {
@@ -88,8 +96,8 @@ namespace Keboola.StorageAPI
                 if (isEnsure)
                     taskType = "Failed while ensuring that the HTTP response was successful(Status Code in range 200-299).";
 
-                string mymessage = "This mostly happens due to some error during export to SAPI. Quick fix: drop the appropiate table(if exists) that is being exported into out stage or check its events.";
-                throw new Exception(mymessage + taskType + ee.Message, ee);
+               // string mymessage = "This mostly happens due to some error during export to SAPI. Quick fix: drop the appropiate table(if exists) that is being exported into out stage or check its events.";
+                throw new Exception(taskType + ee.Message, ee);
 
                 //logger.Exception("Failed handling request task:" + ee.Message
                 //    + ee.StackTrace);            
@@ -110,7 +118,7 @@ namespace Keboola.StorageAPI
                     return readTask.Result;
             }
 
-            return default(TResult);           
+            return  default(TResult);           
         }
 
         public bool SendDeleteRequest(string requestUri)
