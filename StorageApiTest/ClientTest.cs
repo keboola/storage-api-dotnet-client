@@ -130,7 +130,7 @@ namespace Keboola.StorageApiTest
         }
 
 
-          [Test]
+        [Test]
         public void SAPIUploadFileTest()
         {
             StorageApiClient client = new StorageApiClient(token, testRunId);

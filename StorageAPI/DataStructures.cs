@@ -113,8 +113,8 @@ namespace Keboola.StorageAPI.DataStructures
         [DataMember(Name = "bucketPermissions")]
          public Dictionary<string,string> BucketPermissions { get; set; }
 
-        [DataMember(Name = "owner")]
-        public Dictionary<string,string> Owner { get; set; }             
+      //  [DataMember(Name = "owner")]
+     //   public Dictionary<string,string> Owner { get; set; }             
     
     
     }
