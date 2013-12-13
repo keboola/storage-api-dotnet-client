@@ -16,26 +16,26 @@ namespace Keboola.StorageAPI
     public class StorageApiClient
     {
         static Logger logger = new Logger(System.Reflection.Assembly.GetExecutingAssembly());
-        public static string ServerAddress = "https://connection.keboola.com/v2";
+        public static string ServerAddress = "https://connection.keboola.com";
         public static string HeaderTokenName = "X-StorageApi-Token";        
-        public static string HeaderRunIdName = "X-KBC-RunId";   
+        public static string HeaderRunIdName = "X-KBC-RunId";
+        public static string HeaderUserAgentName = "User-Agent";
+
 
         private HttpMultipartDataClient _client;
         private string _token = null;
         public string Token { get { return _token; } private set { ;} }
 
-        public StorageApiClient(string token, string runId = "")
+        public StorageApiClient(string token, string runId = "", string userAgent= "sapi-dotnet-client")
         {
             _token = token;
             _client = new HttpMultipartDataClient(ServerAddress,
                 new Dictionary<string, string>() { { HeaderTokenName, _token },
-                                                   {HeaderRunIdName, runId }
-                                                    });
+                                                   {HeaderRunIdName, runId },
+                                                   {HeaderUserAgentName, userAgent}
+                                                    }, "/v2");
             
-        }
-
-
-        
+        }       
 
 
         /// <summary>
@@ -93,6 +93,14 @@ namespace Keboola.StorageAPI
 
         }
 
+
+        Dictionary<string,string> ConvertAttributesToDict(List<AttributeInfo> attrs)
+        {
+            return attrs
+                .GroupBy(a => a.Name, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(group => group.Key, group => group.First().Value, StringComparer.Ordinal);        
+        }
+
         //
         /// <summary>
         ///https://connection.keboola.com/storage/tables/sys.c-MSCRM.Centrum/attributes/organization 
@@ -110,7 +118,7 @@ namespace Keboola.StorageAPI
             string uri = "/storage/tables/" + tableid + "/attributes/" + attribute;
 
             _client.AddStringFormData(formData);
-            var result = _client.SendPostRequestToJson<Dictionary<string, string>>(uri);
+            var result = ConvertAttributesToDict(_client.SendPostRequestToJson<List<AttributeInfo>>(uri));
 
             if (result[attribute] != value)
                 throw new Exception("attribute was set but returned wrong result");
@@ -126,7 +134,10 @@ namespace Keboola.StorageAPI
         public Dictionary<string, string> ListTableAttributes(string tableid, string attributeKey = "")
         {
             string uri = "/storage/tables/" + tableid + "/attributes/" + attributeKey;
-            return _client.SendGetRequestToJson<Dictionary<string, string>>(uri);
+            var attrs = _client.SendGetRequestToJson<List<AttributeInfo>>(uri);
+            return ConvertAttributesToDict(attrs);
+                
+
 
         }
 
@@ -268,7 +279,7 @@ namespace Keboola.StorageAPI
             };
             _client.AddStringFormData(postData);
             //_client.AddFileFormData("data", file);
-            string prepareUri = "storage/files/prepare";
+            string prepareUri = "/storage/files/prepare";
             Stream result = _client.SendPostRequestReadAsStream(prepareUri);
             string strResponse = new StreamReader(result).ReadToEnd();            
             var json = Newtonsoft.Json.Linq.JObject.Parse(strResponse);            

@@ -92,6 +92,22 @@ namespace Keboola.StorageAPI.DataStructures
 //}
 
 
+    [DataContract]
+    public class AttributeInfo
+    {
+
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "value")]
+        public string Value { get; set; }
+
+        [DataMember(Name = "protected")]
+        public bool Protected { get; set; }
+    
+    
+    }
+
     [DataContract]    
     public class TokenInfo
     {

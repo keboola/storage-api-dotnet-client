@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9BC87379-FC60-42C2-86B4-B7F6B8FDEF3A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>console</RootNamespace>
+    <AssemblyName>sapi-client</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\Tomas\Desktop\keboola\DotNetSapiConsolePublish\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>FF277798FFE8E2E5B2468363CF9843226E4DCEFE</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>console_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommandLine">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CmdParser.cs" />
+    <Compile Include="Controller.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CreateTableCommand.cs" />
+    <Compile Include="TestCommand.cs" />
+    <Compile Include="WriteTableCommand.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="console_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSV\CSV.csproj">
+      <Project>{bca629be-ff7f-4436-8289-0a29104cb4ca}</Project>
+      <Name>CSV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StorageAPI\StorageAPI.csproj">
+      <Project>{a7985e06-27d5-444b-bfad-15af93b46fc2}</Project>
+      <Name>StorageAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Start Zip target -->
+  <ItemGroup>
+    <!-- 
+      Add all *.dll files found in the root of the "bin" folder as link files.
+      - Use Files="@(Content);@(Link)" in the zip target the include both content files as build output in the zip content. 
+      - Using the "@(Content);@(Link)" notation, will merge ItemGroup Content and ItemGroup Link into one property. 
+      - The ".\" before the "bin" folder name in the Include, results in a zip package containing the bin folder.
+      - If you do not want to include the "bin" folder itself but only the files, use "bin\*.dll".
+      - If you want to include subfolders use ".\bin\**\*.dll"
+    -->
+    <Link Include="bin\Release\*.dll" />
+    <Link Include="bin\Release\*.exe" />
+    <Link Include="bin\Release\*.exe.config" />
+  </ItemGroup>
+  <!-- 
+    A relative path will start from the *.csproj file location, 
+    so to get to the MSBuild.Community.Tasks.Targets file, we must add "..\.build\".
+  -->
+  <Import Project="..\.build\MSBuild.Community.Tasks.Targets" />
+  <!-- 
+    The afterbuild target will only be executed, when the project is build in "Release" mode.
+  -->
+   <Target Name="AfterBuild">
+        <PropertyGroup>      
+            <ReleasePath>bin\Release\</ReleasePath>
+        </PropertyGroup>
+    <ItemGroup>      
+        <ReleaseApplicationFiles
+            Include="$(ReleasePath)\**\*.dll;$(ReleasePath)\**\*.exe;$(ReleasePath)\**\*.exe.config"
+            Exclude="$(ReleasePath)\*vshost.exe*;$(ReleasePath)\*.pdb*" />
+    </ItemGroup>
+    <Zip Files="@(ReleaseApplicationFiles)"  WorkingDirectory="$(ReleasePath)" ZipFileName="buid\$(AssemblyName).zip" ZipLevel="9" />
+  </Target>
+  <!-- End Zip target -->
+</Project>

@@ -351,6 +351,8 @@ namespace Keboola.StorageApiTest
             client.SetTableAttribute(testTableId, key, value);
             var attributes = client.ListTableAttributes(testTableId);
             Assert.That(attributes, Is.Not.Null);
+
+
             Assert.That(attributes.ContainsKey(key), Is.True);
             Assert.That(attributes[key], Is.EqualTo(value));
 

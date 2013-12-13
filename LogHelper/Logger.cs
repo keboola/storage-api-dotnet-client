@@ -246,7 +246,7 @@ namespace Keboola.LogHelper
             LogManager.ThrowExceptions = true;
 
             var config = new NLog.Config.LoggingConfiguration();
-            ConfigureFileLog(config);
+            //ConfigureFileLog(config);
 
             ConfigurePaperTrailLog(config);         
 

@@ -16,12 +16,14 @@ namespace Keboola.StorageAPI
         static Logger logger = new Logger(System.Reflection.Assembly.GetExecutingAssembly());
         HttpClient _client = null;
         MultipartFormDataContent _formDataContent = null;
+        string _version = null;
 
-        public HttpMultipartDataClient(string serverAddress, Dictionary<string,string> headers)
+        public HttpMultipartDataClient(string serverAddress, Dictionary<string,string> headers, string apiVersion = null)
         {
            
             _client = new HttpClient();
             _client.BaseAddress = new Uri(serverAddress);
+            _version = apiVersion;
             _client.Timeout = TimeSpan.FromMinutes(30);
             SetHeaders(headers);
         
@@ -98,7 +100,7 @@ namespace Keboola.StorageAPI
 
                // string mymessage = "This mostly happens due to some error during export to SAPI. Quick fix: drop the appropiate table(if exists) that is being exported into out stage or check its events.";
                 throw new Exception(taskType + ee.Message, ee);
-
+                
                 //logger.Exception("Failed handling request task:" + ee.Message
                 //    + ee.StackTrace);            
             }
@@ -121,8 +123,25 @@ namespace Keboola.StorageAPI
             return  default(TResult);           
         }
 
+        /// <summary>
+        /// prepends callUri with version string
+        /// </summary>
+        /// <param name="callUri"></param>
+        /// <returns></returns>
+        string PrepareUri(string callUri)
+        {
+            if (_version == null || _version == "")
+                return callUri;
+            if (callUri[0] != '\\' && callUri[0] != '/')
+                callUri = '/' + callUri;
+            return _version+callUri;        
+        }
+
+
+
         public bool SendDeleteRequest(string requestUri)
         {
+            requestUri = PrepareUri(requestUri);
             logger.Trace("sending DELETE request:" + requestUri);
             var task = _client.DeleteAsync(requestUri);
             try
@@ -140,6 +159,7 @@ namespace Keboola.StorageAPI
         }
         public TResult SendPostRequestToJson<TResult>(string requestUri) where TResult: class
         {
+            requestUri = PrepareUri(requestUri);
             logger.Trace("sending POST Json request:" + requestUri);
             var task = _client.PostAsync(requestUri, _formDataContent);
             return _handleRequestTask<TResult>(task);
@@ -148,6 +168,7 @@ namespace Keboola.StorageAPI
 
         public Stream SendPostRequestReadAsStream(string requestUri)
         {
+            requestUri = PrepareUri(requestUri);
             logger.Trace("sending POST to stream response request:" + requestUri );
             var task = _client.PostAsync(requestUri, _formDataContent);
             if (_HandleTask(task))
@@ -161,15 +182,20 @@ namespace Keboola.StorageAPI
         }
 
 
+
+
         public TResult SendGetRequestToJson<TResult>(string requestUri) where TResult: class
         {
+            requestUri = PrepareUri(requestUri);
             logger.Trace("sending GET Json request:" + requestUri);
             var task = _client.GetAsync(requestUri);
             return _handleRequestTask<TResult>(task);                  
         }
 
+
         public Stream SendGetRequestReadAsStream(string requestUri)
         {
+            requestUri = PrepareUri(requestUri);
             logger.Trace("sending GET to stream response request:" + requestUri);
             var task = _client.GetAsync(requestUri);
             if (_HandleTask(task))

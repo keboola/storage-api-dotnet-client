@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("storage-api-dotnet-client")]
+[assembly: AssemblyTitle("consoleTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP")]
-[assembly: AssemblyProduct("storage-api-dotnet-client")]
+[assembly: AssemblyProduct("consoleTest")]
 [assembly: AssemblyCopyright("Copyright © HP 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cf61b9f7-d699-47f4-984d-3cdc6b3b14b5")]
+[assembly: Guid("cc1ee5da-cf37-44f2-bbca-0ebef5c2ebae")]
 
 // Version information for an assembly consists of the following four values:
 //

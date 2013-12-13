@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<configuration>
+
+  <appSettings>
+    <add key="token" value="INSERT YOUR TOKEN FOR TESTING HERE" />
+    <add key="FluentAssertions.TestFramework" value="nunit"/>
+  </appSettings>
+
+    <system.serviceModel>
+        <behaviors>
+            <endpointBehaviors>
+                <behavior name="StorageApiBehavior">
+                    <!--<webHttp defaultOutgoingResponseFormat="Json" />-->
+                  
+                </behavior>
+            </endpointBehaviors>
+        </behaviors>
+        <bindings/>
+        <client>
+            <endpoint address="http://connection.keboola.com/" behaviorConfiguration="StorageApiBehavior" binding="webHttpBinding" contract="Keboola.StorageAPI.IClient" name="StorageApiEndpoint"/>
+        </client>
+    </system.serviceModel>
+<startup><supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0"/></startup></configuration>
