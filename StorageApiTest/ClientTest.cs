@@ -75,13 +75,9 @@ namespace Keboola.StorageApiTest
 
             return unixTimestamp.ToString();
         }
+
+
         //#########################################TESTS#################################################
-
-        
-
-
-
-
         [Test]
         public void SAPICreateAndUpdateTableAsyncTest()
         {
@@ -101,7 +97,6 @@ namespace Keboola.StorageApiTest
             //creates test file
             FileInfo testFileInfo = new FileInfo(filename);
             System.IO.File.WriteAllText(testFileInfo.FullName, data.ToString());
-
             var gzipfname = CSV.Controller.Compress(testFileInfo);
 
 

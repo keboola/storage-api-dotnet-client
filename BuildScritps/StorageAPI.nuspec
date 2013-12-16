@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>StorageAPIClient</id>
+        <version>1.4.0</version>
+        <title>Keboola SAPI client</title>
+        <authors>tomas.kacur@keboola.com</authors>
+        <licenseUrl>https://github.com/keboola/storage-api-dotnet-client/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/keboola/storage-api-dotnet-client</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>wraper of Keboola Storage API(http://docs.keboola.apiary.io/) .NET library</description>
+        <summary />
+        <releaseNotes />
+        <copyright>Keboola 2013</copyright>
+        <language>en-US</language>
+    </metadata>
+    <files />
+</package>

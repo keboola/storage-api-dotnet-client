@@ -4,3 +4,5 @@
 */obj/*
 *ipch/*
 StorageApiTest/app.config
+console/build
+consoleTest/app.config

@@ -152,7 +152,7 @@
             Include="$(ReleasePath)\**\*.dll;$(ReleasePath)\**\*.exe;$(ReleasePath)\**\*.exe.config"
             Exclude="$(ReleasePath)\*vshost.exe*;$(ReleasePath)\*.pdb*" />
     </ItemGroup>
-    <Zip Files="@(ReleaseApplicationFiles)"  WorkingDirectory="$(ReleasePath)" ZipFileName="buid\$(AssemblyName).zip" ZipLevel="9" />
+    <Zip Files="@(ReleaseApplicationFiles)"  WorkingDirectory="$(ReleasePath)" ZipFileName="build\$(AssemblyName).zip" ZipLevel="9" />
   </Target>
   <!-- End Zip target -->
 </Project>
